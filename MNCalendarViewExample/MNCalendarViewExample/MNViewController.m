@@ -21,6 +21,7 @@
   
   MNCalendarView *calendarView = [[MNCalendarView alloc] initWithFrame:self.view.bounds];
   calendarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+  calendarView.backgroundColor = UIColor.whiteColor;
   
   [self.view addSubview:calendarView];
 }

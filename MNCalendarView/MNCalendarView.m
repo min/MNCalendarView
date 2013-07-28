@@ -25,56 +25,45 @@
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date;
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date;
 
+- (void)applyConstraints;
+
 @end
 
 @implementation MNCalendarView
 
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    self.calendar  = [NSCalendar currentCalendar];
-    self.fromDate  = [[NSDate date] mn_beginningOfDay:self.calendar];
-    self.toDate    = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
+    self.calendar       = [NSCalendar currentCalendar];
+    self.fromDate       = [[NSDate date] mn_beginningOfDay:self.calendar];
+    self.toDate         = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
     self.separatorColor = [UIColor grayColor];
     
     self.daysInWeek = 7;
     
-    self.layout = [[MNCalendarViewLayout alloc] init];
-
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
-    self.collectionView.backgroundColor = UIColor.redColor;
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.collectionView.allowsSelection = YES;
-    self.collectionView.allowsMultipleSelection = YES;
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
-    
-    [self.collectionView registerClass:MNCalendarViewCell.class
-            forCellWithReuseIdentifier:MNCalendarViewCellIdentifier];
-    
-    [self.collectionView registerClass:MNCalendarHeaderView.class
-            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                   withReuseIdentifier:MNCalendarHeaderViewIdentifier];
-    
-    self.collectionView.delegate = self;
-    
     [self addSubview:self.collectionView];
-    
-    NSDictionary *views = @{@"collectionView" : self.collectionView};
-    [self addConstraints:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|"
-                                             options:0
-                                             metrics:nil
-                                               views:views]];
-    
-    [self addConstraints:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
-                                             options:0
-                                             metrics:nil
-                                               views:views]
-     ];
+    [self applyConstraints];
     [self reloadData];
   }
   return self;
+}
+
+- (UICollectionView *)collectionView {
+  if (nil == _collectionView) {
+    _collectionView =
+      [[UICollectionView alloc] initWithFrame:CGRectZero
+                         collectionViewLayout:[[MNCalendarViewLayout alloc] init]];
+    _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    
+    [_collectionView registerClass:MNCalendarViewCell.class
+        forCellWithReuseIdentifier:MNCalendarViewCellIdentifier];
+    
+    [_collectionView registerClass:MNCalendarHeaderView.class
+        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+               withReuseIdentifier:MNCalendarHeaderViewIdentifier];
+  }
+  return _collectionView;
 }
 
 - (void)reloadData {
@@ -92,10 +81,6 @@
   [self.collectionView reloadData];
 }
 
-- (void)setCalendar:(NSCalendar *)calendar {
-  _calendar = calendar;
-}
-
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date {
   date = [date mn_firstDateOfMonth:self.calendar];
   
@@ -103,17 +88,36 @@
     [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
                 fromDate:date];
   
-  return [[date mn_dateWithDay:-((components.weekday-1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
+  return
+    [[date mn_dateWithDay:-((components.weekday - 1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
 }
 
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date {
   date = [date mn_lastDateOfMonth:self.calendar];
   
   NSDateComponents *components =
-  [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
-                   fromDate:date];
+    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
+                     fromDate:date];
   
-  return [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday-1) % self.daysInWeek) calendar:self.calendar];
+  return
+    [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday - 1) % self.daysInWeek)
+                calendar:self.calendar];
+}
+
+- (void)applyConstraints {
+  NSDictionary *views = @{@"collectionView" : self.collectionView};
+  [self addConstraints:
+   [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|"
+                                           options:0
+                                           metrics:nil
+                                             views:views]];
+  
+  [self addConstraints:
+   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+                                           options:0
+                                           metrics:nil
+                                             views:views]
+   ];
 }
 
 #pragma mark - UICollectionViewDataSource
