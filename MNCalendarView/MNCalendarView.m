@@ -34,6 +34,7 @@
     self.calendar  = [NSCalendar currentCalendar];
     self.fromDate  = [[NSDate date] mn_beginningOfDay:self.calendar];
     self.toDate    = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
+    self.separatorColor = [UIColor grayColor];
     
     self.daysInWeek = 7;
     
@@ -148,6 +149,8 @@
   [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewCellIdentifier
                                             forIndexPath:indexPath];
   
+  cell.separatorColor = self.separatorColor;
+  
   NSDate *monthDate =
     [self firstVisibleDateOfMonth:self.monthDates[indexPath.section]];
   
@@ -161,7 +164,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout*)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
   
   CGFloat width     = self.bounds.size.width;
   CGFloat itemWidth = roundf(width / self.daysInWeek);

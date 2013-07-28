@@ -24,6 +24,8 @@
 @property(nonatomic,copy)   NSDate     *fromDate;
 @property(nonatomic,copy)   NSDate     *toDate;
 
+@property(nonatomic,strong) UIColor *separatorColor; // default is the standard separator gray
+
 - (void)reloadData;
 
 @end

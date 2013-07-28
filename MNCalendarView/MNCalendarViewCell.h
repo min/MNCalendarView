@@ -14,4 +14,6 @@ extern NSString *const MNCalendarViewCellIdentifier;
 
 @property(nonatomic,strong) NSDate *date;
 
+@property(nonatomic,strong) UIColor *separatorColor;
+
 @end
