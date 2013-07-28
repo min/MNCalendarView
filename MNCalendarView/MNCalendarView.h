@@ -21,8 +21,8 @@
 @property(nonatomic,strong,readonly) UICollectionView *collectionView;
 
 @property(nonatomic,strong) NSCalendar *calendar;
-@property(nonatomic,copy)   NSDate     *startDate;
-@property(nonatomic,copy)   NSDate     *endDate;
+@property(nonatomic,copy)   NSDate     *fromDate;
+@property(nonatomic,copy)   NSDate     *toDate;
 
 - (void)reloadData;
 

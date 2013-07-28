@@ -12,8 +12,8 @@
 
 @property(nonatomic,strong,readwrite) NSCalendar       *calendar;
 @property(nonatomic,strong,readwrite) NSDateComponents *components;
-@property(nonatomic,strong,readwrite) NSDate           *startDate;
-@property(nonatomic,strong,readwrite) NSDate           *endDate;
+@property(nonatomic,strong,readwrite) NSDate           *fromDate;
+@property(nonatomic,strong,readwrite) NSDate           *toDate;
 
 @property(nonatomic,assign,readwrite) NSCalendarUnit    unit;
 
@@ -21,19 +21,19 @@
 
 @implementation MNFastDateEnumeration
 
-- (instancetype)initWithStartDate:(NSDate *)startDate
-                          endDate:(NSDate *)endDate
-                         calendar:(NSCalendar *)calendar
-                             unit:(NSCalendarUnit)unit {
+- (instancetype)initWithFromDate:(NSDate *)fromDate
+                          toDate:(NSDate *)toDate
+                        calendar:(NSCalendar *)calendar
+                            unit:(NSCalendarUnit)unit {
   if (self = [super init]) {
-    self.startDate = startDate;
-    self.endDate   = endDate;
-    self.calendar  = calendar;
-    self.unit      = unit;
+    self.fromDate   = fromDate;
+    self.toDate     = toDate;
+    self.calendar   = calendar;
+    self.unit       = unit;
     self.components =
     [self.calendar components:unit
-                     fromDate:self.startDate
-                       toDate:self.endDate
+                     fromDate:self.fromDate
+                       toDate:self.toDate
                       options:0];
   }
   return self;
@@ -79,7 +79,7 @@
       
       NSDate *date =
         [self.calendar dateByAddingComponents:self.components
-                                       toDate:self.startDate
+                                       toDate:self.fromDate
                                       options:0];
       buffer[count] = date;
       state->state++;

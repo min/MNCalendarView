@@ -32,8 +32,8 @@
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     self.calendar  = [NSCalendar currentCalendar];
-    self.startDate = [[NSDate date] mn_beginningOfDay:self.calendar];
-    self.endDate   = [self.startDate dateByAddingTimeInterval:MN_YEAR * 4];
+    self.fromDate  = [[NSDate date] mn_beginningOfDay:self.calendar];
+    self.toDate    = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
     
     self.numberOfDaysInWeek = 7;
     
@@ -79,10 +79,10 @@
 - (void)reloadData {
   NSMutableArray *monthDates = @[].mutableCopy;
   MNFastDateEnumeration *enumeration =
-    [[MNFastDateEnumeration alloc] initWithStartDate:[self.startDate mn_firstDateOfMonth:self.calendar]
-                                             endDate:[self.endDate mn_firstDateOfMonth:self.calendar]
-                                            calendar:self.calendar
-                                                unit:NSCalendarUnitMonth];
+    [[MNFastDateEnumeration alloc] initWithFromDate:[self.fromDate mn_firstDateOfMonth:self.calendar]
+                                             toDate:[self.toDate mn_firstDateOfMonth:self.calendar]
+                                           calendar:self.calendar
+                                               unit:NSCalendarUnitMonth];
   for (NSDate *date in enumeration) {
     [monthDates addObject:date];
   }

@@ -10,14 +10,15 @@
 
 @interface MNFastDateEnumeration : NSObject<NSFastEnumeration>
 
-@property(nonatomic,assign,readonly) NSCalendar *calendar;
-@property(nonatomic,strong,readonly) NSDate *startDate;
-@property(nonatomic,strong,readonly) NSDate *endDate;
+@property(nonatomic,strong,readonly) NSCalendar *calendar;
+@property(nonatomic,strong,readonly) NSDate     *fromDate;
+@property(nonatomic,strong,readonly) NSDate     *toDate;
+
 @property(nonatomic,assign,readonly) NSCalendarUnit unit;
 
-- (instancetype)initWithStartDate:(NSDate *)startDate
-                          endDate:(NSDate *)endDate
-                         calendar:(NSCalendar *)calendar
-                             unit:(NSCalendarUnit)unit;
+- (instancetype)initWithFromDate:(NSDate *)fromDate
+                          toDate:(NSDate *)toDate
+                        calendar:(NSCalendar *)calendar
+                            unit:(NSCalendarUnit)unit;
 
 @end
