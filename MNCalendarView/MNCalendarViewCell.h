@@ -12,8 +12,16 @@ extern NSString *const MNCalendarViewCellIdentifier;
 
 @interface MNCalendarViewCell : UICollectionViewCell
 
-@property(nonatomic,strong) NSDate *date;
+@property(nonatomic,strong,readonly) NSDate     *date;
+@property(nonatomic,strong,readonly) NSDate     *month;
+@property(nonatomic,strong,readonly) NSCalendar *calendar;
+
+@property(nonatomic,assign,getter = isEnabled) BOOL enabled;
 
 @property(nonatomic,strong) UIColor *separatorColor;
+
+- (void)setDate:(NSDate *)date
+          month:(NSDate *)month
+       calendar:(NSCalendar *)calendar;
 
 @end

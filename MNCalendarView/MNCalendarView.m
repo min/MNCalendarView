@@ -33,10 +33,10 @@
 
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    self.calendar       = [NSCalendar currentCalendar];
-    self.fromDate       = [[NSDate date] mn_beginningOfDay:self.calendar];
+    self.calendar       = NSCalendar.currentCalendar;
+    self.fromDate       = [NSDate.date mn_beginningOfDay:self.calendar];
     self.toDate         = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
-    self.separatorColor = [UIColor grayColor];
+    self.separatorColor = UIColor.lightGrayColor;
     
     self.daysInWeek = 7;
     
@@ -128,9 +128,9 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
   MNCalendarHeaderView *headerView =
-  [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                     withReuseIdentifier:MNCalendarHeaderViewIdentifier
-                                            forIndexPath:indexPath];
+    [collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                       withReuseIdentifier:MNCalendarHeaderViewIdentifier
+                                              forIndexPath:indexPath];
   return headerView;
 }
 
@@ -155,10 +155,13 @@
   
   cell.separatorColor = self.separatorColor;
   
-  NSDate *monthDate =
-    [self firstVisibleDateOfMonth:self.monthDates[indexPath.section]];
-  
-  cell.date = [monthDate dateByAddingTimeInterval:indexPath.item * MN_DAY];
+  NSDate *monthDate = self.monthDates[indexPath.section];
+  NSDate *firstDateInMonth =
+    [self firstVisibleDateOfMonth:monthDate];
+
+  [cell setDate:[firstDateInMonth dateByAddingTimeInterval:indexPath.item * MN_DAY]
+          month:monthDate
+       calendar:self.calendar];
   
   return cell;
 }

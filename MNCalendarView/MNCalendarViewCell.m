@@ -22,7 +22,11 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
 
 @interface MNCalendarViewCell()
 
-@property(nonatomic,readwrite) UILabel *titleLabel;
+@property(nonatomic,strong,readwrite) UILabel *titleLabel;
+
+@property(nonatomic,strong,readwrite) NSDate     *date;
+@property(nonatomic,strong,readwrite) NSDate     *month;
+@property(nonatomic,strong,readwrite) NSCalendar *calendar;
 
 @end
 
@@ -35,7 +39,8 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
     
     self.titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
     self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
+    self.titleLabel.font = [UIFont systemFontOfSize:14.f];
+    self.titleLabel.textColor = [UIColor darkTextColor];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.userInteractionEnabled = NO;
     self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -56,10 +61,33 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
   self.selectedBackgroundView.frame = self.bounds;
 }
 
-- (void)setDate:(NSDate *)date {
-  _date = date;
+- (void)setDate:(NSDate *)date
+          month:(NSDate *)month
+       calendar:(NSCalendar *)calendar {
+  
+  self.date     = date;
+  self.month    = month;
+  self.calendar = calendar;
+  
+  NSDateComponents *components =
+    [self.calendar components:NSMonthCalendarUnit|NSDayCalendarUnit
+                     fromDate:self.date];
+  
+  NSDateComponents *monthComponents =
+    [self.calendar components:NSMonthCalendarUnit
+                     fromDate:self.month];
+  
+  self.titleLabel.text = [NSString stringWithFormat:@"%d", components.day];
+  self.enabled = monthComponents.month == components.month;
   
   [self setNeedsDisplay];
+}
+
+- (void)setEnabled:(BOOL)enabled {
+  _enabled = enabled;
+  
+  self.titleLabel.textColor =
+    self.enabled ? UIColor.darkTextColor : UIColor.lightGrayColor;
 }
 
 - (void)drawRect:(CGRect)rect {
