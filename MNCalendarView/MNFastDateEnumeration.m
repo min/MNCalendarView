@@ -55,7 +55,6 @@
         unit = self.components.day;
         break;
     }
-    NSLog(@"unit: %d", unit);
     state->extra[0] = unit;
   } else {
     unit = state->extra[0];
