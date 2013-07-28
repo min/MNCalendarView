@@ -8,20 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const MNCalendarViewCellIdentifier;
-
 @interface MNCalendarViewCell : UICollectionViewCell
 
-@property(nonatomic,strong,readonly) NSDate     *date;
-@property(nonatomic,strong,readonly) NSDate     *month;
-@property(nonatomic,strong,readonly) NSCalendar *calendar;
+@property(nonatomic,strong) NSCalendar *calendar;
 
 @property(nonatomic,assign,getter = isEnabled) BOOL enabled;
 
 @property(nonatomic,strong) UIColor *separatorColor;
 
-- (void)setDate:(NSDate *)date
-          month:(NSDate *)month
-       calendar:(NSCalendar *)calendar;
+@property(nonatomic,strong,readonly) UILabel *titleLabel;
 
 @end

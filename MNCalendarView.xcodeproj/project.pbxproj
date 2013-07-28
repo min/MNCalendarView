@@ -24,6 +24,8 @@
 		39A860E517A3229F003F6F4A /* NSDate+MNAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 39A860D817A2F234003F6F4A /* NSDate+MNAdditions.h */; };
 		39A860E617A3229F003F6F4A /* MNFastDateEnumeration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 39A860E117A31FAB003F6F4A /* MNFastDateEnumeration.h */; };
 		39A860EA17A32E79003F6F4A /* MNCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39A860E917A32E79003F6F4A /* MNCalendarHeaderView.m */; };
+		39FCA69017A5CE0D0064F303 /* MNCalendarViewWeekdayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 39FCA68F17A5CE0D0064F303 /* MNCalendarViewWeekdayCell.m */; };
+		39FCA69617A5D0F70064F303 /* MNCalendarViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 39FCA69517A5D0F70064F303 /* MNCalendarViewDayCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,10 @@
 		39A860E217A31FAB003F6F4A /* MNFastDateEnumeration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNFastDateEnumeration.m; sourceTree = "<group>"; };
 		39A860E817A32E79003F6F4A /* MNCalendarHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNCalendarHeaderView.h; sourceTree = "<group>"; };
 		39A860E917A32E79003F6F4A /* MNCalendarHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNCalendarHeaderView.m; sourceTree = "<group>"; };
+		39FCA68E17A5CE0D0064F303 /* MNCalendarViewWeekdayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNCalendarViewWeekdayCell.h; sourceTree = "<group>"; };
+		39FCA68F17A5CE0D0064F303 /* MNCalendarViewWeekdayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNCalendarViewWeekdayCell.m; sourceTree = "<group>"; };
+		39FCA69417A5D0F70064F303 /* MNCalendarViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNCalendarViewDayCell.h; sourceTree = "<group>"; };
+		39FCA69517A5D0F70064F303 /* MNCalendarViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNCalendarViewDayCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,8 +144,12 @@
 				3907541A179F6DC5002AC1EC /* MNCalendarView.m */,
 				39A860DB17A30210003F6F4A /* MNCalendarViewCell.h */,
 				39A860DC17A30210003F6F4A /* MNCalendarViewCell.m */,
+				39FCA69417A5D0F70064F303 /* MNCalendarViewDayCell.h */,
+				39FCA69517A5D0F70064F303 /* MNCalendarViewDayCell.m */,
 				394051CF17A350850099F12A /* MNCalendarViewLayout.h */,
 				394051D017A350850099F12A /* MNCalendarViewLayout.m */,
+				39FCA68E17A5CE0D0064F303 /* MNCalendarViewWeekdayCell.h */,
+				39FCA68F17A5CE0D0064F303 /* MNCalendarViewWeekdayCell.m */,
 				39A860E117A31FAB003F6F4A /* MNFastDateEnumeration.h */,
 				39A860E217A31FAB003F6F4A /* MNFastDateEnumeration.m */,
 				39A860D817A2F234003F6F4A /* NSDate+MNAdditions.h */,
@@ -274,7 +284,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39FCA69617A5D0F70064F303 /* MNCalendarViewDayCell.m in Sources */,
 				39A860E317A31FAB003F6F4A /* MNFastDateEnumeration.m in Sources */,
+				39FCA69017A5CE0D0064F303 /* MNCalendarViewWeekdayCell.m in Sources */,
 				394051D117A350850099F12A /* MNCalendarViewLayout.m in Sources */,
 				3907541B179F6DC5002AC1EC /* MNCalendarView.m in Sources */,
 				39A860DD17A30210003F6F4A /* MNCalendarViewCell.m in Sources */,

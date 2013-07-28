@@ -14,7 +14,7 @@ NSString *const MNCalendarHeaderViewIdentifier = @"MNCalendarHeaderViewIdentifie
 
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    self.backgroundColor = UIColor.whiteColor;
+    self.backgroundColor = UIColor.redColor;
   }
   return self;
 }

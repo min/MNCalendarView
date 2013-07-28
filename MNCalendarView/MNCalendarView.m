@@ -8,19 +8,21 @@
 
 #import "MNCalendarView.h"
 #import "MNCalendarViewLayout.h"
-#import "MNCalendarViewCell.h"
+#import "MNCalendarViewDayCell.h"
+#import "MNCalendarViewWeekdayCell.h"
 #import "MNCalendarHeaderView.h"
+
 
 #import "NSDate+MNAdditions.h"
 #import "MNFastDateEnumeration.h"
 
 @interface MNCalendarView() <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property(nonatomic,strong,readwrite) UICollectionView           *collectionView;
+@property(nonatomic,strong,readwrite) UICollectionView *collectionView;
 @property(nonatomic,strong,readwrite) UICollectionViewFlowLayout *layout;
 
-@property(nonatomic,strong,readwrite) NSArray          *monthDates;
-@property(nonatomic,assign,readwrite) NSUInteger        daysInWeek;
+@property(nonatomic,strong,readwrite) NSArray *monthDates;
+@property(nonatomic,assign,readwrite) NSUInteger daysInWeek;
 
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date;
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date;
@@ -56,8 +58,11 @@
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     
-    [_collectionView registerClass:MNCalendarViewCell.class
-        forCellWithReuseIdentifier:MNCalendarViewCellIdentifier];
+    [_collectionView registerClass:MNCalendarViewDayCell.class
+        forCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier];
+
+    [_collectionView registerClass:MNCalendarViewWeekdayCell.class
+        forCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier];
     
     [_collectionView registerClass:MNCalendarHeaderView.class
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
@@ -126,7 +131,9 @@
   return self.monthDates.count;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath {
   MNCalendarHeaderView *headerView =
     [collectionView dequeueReusableSupplementaryViewOfKind:kind
                                        withReuseIdentifier:MNCalendarHeaderViewIdentifier
@@ -138,20 +145,28 @@
   NSDate *monthDate = self.monthDates[section];
   
   NSDateComponents *components =
-  [self.calendar components:NSDayCalendarUnit
-                   fromDate:[self firstVisibleDateOfMonth:monthDate]
-                     toDate:[self lastVisibleDateOfMonth:monthDate]
-                    options:0];
+    [self.calendar components:NSDayCalendarUnit
+                     fromDate:[self firstVisibleDateOfMonth:monthDate]
+                       toDate:[self lastVisibleDateOfMonth:monthDate]
+                      options:0];
   
-  return components.day + 1;
+  return self.daysInWeek + components.day + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 
-  MNCalendarViewCell *cell =
-  [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewCellIdentifier
-                                            forIndexPath:indexPath];
+  if (indexPath.item < self.daysInWeek) {
+    MNCalendarViewWeekdayCell *cell =
+      [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier
+                                                forIndexPath:indexPath];
+  
+    cell.separatorColor = self.separatorColor;
+    return cell;
+  }
+  MNCalendarViewDayCell *cell =
+    [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier
+                                              forIndexPath:indexPath];
   
   cell.separatorColor = self.separatorColor;
   
@@ -159,7 +174,8 @@
   NSDate *firstDateInMonth =
     [self firstVisibleDateOfMonth:monthDate];
 
-  [cell setDate:[firstDateInMonth dateByAddingTimeInterval:indexPath.item * MN_DAY]
+  NSUInteger day = indexPath.item - self.daysInWeek;
+  [cell setDate:[firstDateInMonth dateByAddingTimeInterval:day * MN_DAY]
           month:monthDate
        calendar:self.calendar];
   

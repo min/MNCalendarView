@@ -24,10 +24,6 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
 
 @property(nonatomic,strong,readwrite) UILabel *titleLabel;
 
-@property(nonatomic,strong,readwrite) NSDate     *date;
-@property(nonatomic,strong,readwrite) NSDate     *month;
-@property(nonatomic,strong,readwrite) NSCalendar *calendar;
-
 @end
 
 @implementation MNCalendarViewCell
@@ -59,35 +55,6 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
   
   self.contentView.frame = self.bounds;
   self.selectedBackgroundView.frame = self.bounds;
-}
-
-- (void)setDate:(NSDate *)date
-          month:(NSDate *)month
-       calendar:(NSCalendar *)calendar {
-  
-  self.date     = date;
-  self.month    = month;
-  self.calendar = calendar;
-  
-  NSDateComponents *components =
-    [self.calendar components:NSMonthCalendarUnit|NSDayCalendarUnit
-                     fromDate:self.date];
-  
-  NSDateComponents *monthComponents =
-    [self.calendar components:NSMonthCalendarUnit
-                     fromDate:self.month];
-  
-  self.titleLabel.text = [NSString stringWithFormat:@"%d", components.day];
-  self.enabled = monthComponents.month == components.month;
-  
-  [self setNeedsDisplay];
-}
-
-- (void)setEnabled:(BOOL)enabled {
-  _enabled = enabled;
-  
-  self.titleLabel.textColor =
-    self.enabled ? UIColor.darkTextColor : UIColor.lightGrayColor;
 }
 
 - (void)drawRect:(CGRect)rect {
