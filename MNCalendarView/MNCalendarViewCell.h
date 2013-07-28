@@ -12,7 +12,6 @@ extern NSString *const MNCalendarViewCellIdentifier;
 
 @interface MNCalendarViewCell : UICollectionViewCell
 
-@property(nonatomic,assign)   NSUInteger weekday;
-@property(nonatomic,readonly) UILabel   *titleLabel;
+@property(nonatomic,strong) NSDate *date;
 
 @end

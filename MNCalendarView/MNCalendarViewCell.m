@@ -56,8 +56,8 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
   self.selectedBackgroundView.frame = self.bounds;
 }
 
-- (void)setWeekday:(NSUInteger)weekday {
-  _weekday = weekday;
+- (void)setDate:(NSDate *)date {
+  _date = date;
   
   [self setNeedsDisplay];
 }
@@ -66,9 +66,7 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
   CGContextRef context = UIGraphicsGetCurrentContext();
   MNContextDrawLine(context, CGPointMake(0.f, 0.5f), CGPointMake(self.bounds.size.width, 0.5f), UIColor.blackColor.CGColor, 0.5f);
   
-  if (self.weekday < 6) {
-    MNContextDrawLine(context, CGPointMake(self.bounds.size.width - 0.5f, 0.5f), CGPointMake(self.bounds.size.width - 0.5f, self.bounds.size.height), UIColor.blackColor.CGColor, 0.5f);
-  }
+  MNContextDrawLine(context, CGPointMake(self.bounds.size.width - 0.5f, 0.5f), CGPointMake(self.bounds.size.width - 0.5f, self.bounds.size.height), UIColor.blackColor.CGColor, 0.5f);
 }
 
 @end

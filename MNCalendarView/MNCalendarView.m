@@ -20,7 +20,7 @@
 @property(nonatomic,strong,readwrite) UICollectionViewFlowLayout *layout;
 
 @property(nonatomic,strong,readwrite) NSArray          *monthDates;
-@property(nonatomic,assign,readwrite) NSUInteger        numberOfDaysInWeek;
+@property(nonatomic,assign,readwrite) NSUInteger        daysInWeek;
 
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date;
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date;
@@ -35,7 +35,7 @@
     self.fromDate  = [[NSDate date] mn_beginningOfDay:self.calendar];
     self.toDate    = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
     
-    self.numberOfDaysInWeek = 7;
+    self.daysInWeek = 7;
     
     self.layout = [[MNCalendarViewLayout alloc] init];
 
@@ -102,7 +102,7 @@
     [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
                 fromDate:date];
   
-  return [[date mn_dateWithDay:-((components.weekday-1) % self.numberOfDaysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
+  return [[date mn_dateWithDay:-((components.weekday-1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
 }
 
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date {
@@ -112,7 +112,7 @@
   [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
                    fromDate:date];
   
-  return [date mn_dateWithDay:components.day + (self.numberOfDaysInWeek - 1) - ((components.weekday-1) % self.numberOfDaysInWeek) calendar:self.calendar];
+  return [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday-1) % self.daysInWeek) calendar:self.calendar];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -151,14 +151,7 @@
   NSDate *monthDate =
     [self firstVisibleDateOfMonth:self.monthDates[indexPath.section]];
   
-  NSDate *date =
-    [monthDate dateByAddingTimeInterval:indexPath.item * MN_DAY];
-  
-  NSDateComponents *components =
-    [self.calendar components:NSDayCalendarUnit fromDate:date];
-  
-  cell.titleLabel.text = [NSString stringWithFormat:@"%d", components.day];
-  cell.weekday = (indexPath.item % self.numberOfDaysInWeek);
+  cell.date = [monthDate dateByAddingTimeInterval:indexPath.item * MN_DAY];
   
   return cell;
 }
@@ -170,15 +163,16 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
   
-  CGFloat calendarWidth = self.collectionView.bounds.size.width;
+  CGFloat width     = self.bounds.size.width;
+  CGFloat itemWidth = roundf(width / self.daysInWeek);
   
-  CGFloat width = floorf(calendarWidth / self.numberOfDaysInWeek);
+  NSUInteger weekday = indexPath.item % self.daysInWeek;
   
-  if ((indexPath.item % self.numberOfDaysInWeek) == self.numberOfDaysInWeek - 1) {
-    return CGSizeMake(calendarWidth - (width * (self.numberOfDaysInWeek - 1)), width);
+  if (weekday == self.daysInWeek - 1) {
+    return CGSizeMake(width - (itemWidth * (self.daysInWeek - 1)), itemWidth);
   }
   
-  return CGSizeMake(width, width);
+  return CGSizeMake(itemWidth, itemWidth);
 }
 
 @end
