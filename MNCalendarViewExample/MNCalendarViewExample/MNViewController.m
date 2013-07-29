@@ -8,7 +8,7 @@
 
 #import "MNViewController.h"
 
-@interface MNViewController ()
+@interface MNViewController () <MNCalendarViewDelegate>
 
 @end
 
@@ -20,10 +20,17 @@
   self.view.backgroundColor = UIColor.whiteColor;
   
   MNCalendarView *calendarView = [[MNCalendarView alloc] initWithFrame:self.view.bounds];
+  calendarView.delegate = self;
   calendarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   calendarView.backgroundColor = UIColor.whiteColor;
   
   [self.view addSubview:calendarView];
+}
+
+#pragma mark - MNCalendarViewDelegate
+
+- (void)calendarView:(MNCalendarView *)calendarView didSelectDate:(NSDate *)date {
+  NSLog(@"date selected: %@", date);
 }
 
 @end

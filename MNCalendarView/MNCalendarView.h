@@ -20,6 +20,8 @@
 
 @property(nonatomic,strong,readonly) UICollectionView *collectionView;
 
+@property(nonatomic,assign) id<MNCalendarViewDelegate> delegate;
+
 @property(nonatomic,strong) NSCalendar *calendar;
 @property(nonatomic,copy)   NSDate     *fromDate;
 @property(nonatomic,copy)   NSDate     *toDate;

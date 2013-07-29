@@ -211,6 +211,15 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:collectionView cellForItemAtIndexPath:indexPath];
+
+  if ([cell isKindOfClass:MNCalendarViewDayCell.class] && cell.enabled) {
+    MNCalendarViewDayCell *dayCell = (MNCalendarViewDayCell *)cell;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(calendarView:didSelectDate:)]) {
+      [self.delegate calendarView:self didSelectDate:dayCell.date];
+    }
+  }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
