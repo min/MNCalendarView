@@ -22,6 +22,7 @@
 @property(nonatomic,strong,readwrite) UICollectionViewFlowLayout *layout;
 
 @property(nonatomic,strong,readwrite) NSArray *monthDates;
+@property(nonatomic,strong,readwrite) NSArray *weekdaySymbols;
 @property(nonatomic,assign,readwrite) NSUInteger daysInWeek;
 
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date;
@@ -51,9 +52,11 @@
 
 - (UICollectionView *)collectionView {
   if (nil == _collectionView) {
+    MNCalendarViewLayout *layout = [[MNCalendarViewLayout alloc] init];
+    
     _collectionView =
       [[UICollectionView alloc] initWithFrame:CGRectZero
-                         collectionViewLayout:[[MNCalendarViewLayout alloc] init]];
+                         collectionViewLayout:layout];
     _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
@@ -82,6 +85,11 @@
     [monthDates addObject:date];
   }
   self.monthDates = monthDates;
+  
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  formatter.calendar = self.calendar;
+  
+  self.weekdaySymbols = formatter.shortWeekdaySymbols;
   
   [self.collectionView reloadData];
 }
@@ -164,6 +172,7 @@
       [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier
                                                 forIndexPath:indexPath];
   
+    cell.titleLabel.text = self.weekdaySymbols[indexPath.item];
     cell.separatorColor = self.separatorColor;
     return cell;
   }
@@ -187,6 +196,12 @@
 
 #pragma mark - UICollectionViewDelegate
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+  MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:collectionView cellForItemAtIndexPath:indexPath];
+  
+  return cell.enabled;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
@@ -194,16 +209,17 @@
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
   
-  CGFloat width     = self.bounds.size.width;
-  CGFloat itemWidth = roundf(width / self.daysInWeek);
+  CGFloat width      = self.bounds.size.width;
+  CGFloat itemWidth  = roundf(width / self.daysInWeek);
+  CGFloat itemHeight = indexPath.item < self.daysInWeek ? 30.f : itemWidth;
   
   NSUInteger weekday = indexPath.item % self.daysInWeek;
   
   if (weekday == self.daysInWeek - 1) {
-    return CGSizeMake(width - (itemWidth * (self.daysInWeek - 1)), itemWidth);
+    itemWidth = width - (itemWidth * (self.daysInWeek - 1));
   }
   
-  return CGSizeMake(itemWidth, itemWidth);
+  return CGSizeMake(itemWidth, itemHeight);
 }
 
 @end

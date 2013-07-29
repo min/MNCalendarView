@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+CG_EXTERN void MNContextDrawLine(CGContextRef c, CGPoint start, CGPoint end, CGColorRef color, CGFloat lineWidth);
+
 @interface MNCalendarViewCell : UICollectionViewCell
 
 @property(nonatomic,strong) NSCalendar *calendar;

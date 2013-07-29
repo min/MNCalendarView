@@ -51,4 +51,18 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   self.enabled ? UIColor.whiteColor : [UIColor colorWithRed:.96f green:.96f blue:.96f alpha:1.f];
 }
 
+- (void)drawRect:(CGRect)rect {
+  [super drawRect:rect];
+  
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  
+  CGColorRef separatorColor = self.separatorColor.CGColor;
+  
+  MNContextDrawLine(context,
+                    CGPointMake(self.bounds.size.width - 0.5f, 0.5f),
+                    CGPointMake(self.bounds.size.width - 0.5f, self.bounds.size.height),
+                    separatorColor,
+                    0.5f);
+}
+
 @end
