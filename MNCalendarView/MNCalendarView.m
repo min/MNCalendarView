@@ -138,6 +138,9 @@
     [collectionView dequeueReusableSupplementaryViewOfKind:kind
                                        withReuseIdentifier:MNCalendarHeaderViewIdentifier
                                               forIndexPath:indexPath];
+
+  headerView.date = self.monthDates[indexPath.section];
+
   return headerView;
 }
 

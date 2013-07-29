@@ -12,4 +12,6 @@ extern NSString *const MNCalendarHeaderViewIdentifier;
 
 @interface MNCalendarHeaderView : UICollectionReusableView
 
+@property(nonatomic,strong) NSDate *date;
+
 @end
