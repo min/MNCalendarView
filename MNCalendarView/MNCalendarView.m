@@ -51,15 +51,17 @@
 - (UICollectionView *)collectionView {
   if (nil == _collectionView) {
     MNCalendarViewLayout *layout = [[MNCalendarViewLayout alloc] init];
-    
+
     _collectionView =
       [[UICollectionView alloc] initWithFrame:CGRectZero
                          collectionViewLayout:layout];
+    _collectionView.backgroundColor = [UIColor colorWithRed:.96f green:.96f blue:.96f alpha:1.f];
     _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     _collectionView.showsHorizontalScrollIndicator = NO;
     _collectionView.showsVerticalScrollIndicator = NO;
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
+    
     
     [_collectionView registerClass:MNCalendarViewDayCell.class
         forCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier];
@@ -147,6 +149,7 @@
                                        withReuseIdentifier:MNCalendarHeaderViewIdentifier
                                               forIndexPath:indexPath];
 
+  headerView.backgroundColor = self.collectionView.backgroundColor;
   headerView.date = self.monthDates[indexPath.section];
 
   return headerView;
@@ -171,7 +174,8 @@
     MNCalendarViewWeekdayCell *cell =
       [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier
                                                 forIndexPath:indexPath];
-  
+    
+    cell.backgroundColor = self.collectionView.backgroundColor;
     cell.titleLabel.text = self.weekdaySymbols[indexPath.item];
     cell.separatorColor = self.separatorColor;
     return cell;
