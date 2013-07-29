@@ -21,6 +21,9 @@
 		39A860C317A2EFE5003F6F4A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 39A860C117A2EFE5003F6F4A /* InfoPlist.strings */; };
 		39A860C517A2EFE5003F6F4A /* MNCalendarViewExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 39A860C417A2EFE5003F6F4A /* MNCalendarViewExampleTests.m */; };
 		39A860D717A2F04F003F6F4A /* libMNCalendarView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39A860D417A2F022003F6F4A /* libMNCalendarView.a */; };
+		39FCA69C17A6D99A0064F303 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39FCA69917A6D99A0064F303 /* Default-568h@2x.png */; };
+		39FCA69D17A6D99A0064F303 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 39FCA69A17A6D99A0064F303 /* Default.png */; };
+		39FCA69E17A6D99A0064F303 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39FCA69B17A6D99A0064F303 /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +70,9 @@
 		39A860C217A2EFE5003F6F4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		39A860C417A2EFE5003F6F4A /* MNCalendarViewExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MNCalendarViewExampleTests.m; sourceTree = "<group>"; };
 		39A860CE17A2F022003F6F4A /* MNCalendarView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MNCalendarView.xcodeproj; path = ../MNCalendarView.xcodeproj; sourceTree = "<group>"; };
+		39FCA69917A6D99A0064F303 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		39FCA69A17A6D99A0064F303 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		39FCA69B17A6D99A0064F303 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +134,9 @@
 		39A8609C17A2EFE4003F6F4A /* MNCalendarViewExample */ = {
 			isa = PBXGroup;
 			children = (
+				39FCA69917A6D99A0064F303 /* Default-568h@2x.png */,
+				39FCA69A17A6D99A0064F303 /* Default.png */,
+				39FCA69B17A6D99A0064F303 /* Default@2x.png */,
 				39A860A517A2EFE4003F6F4A /* MNAppDelegate.h */,
 				39A860A617A2EFE4003F6F4A /* MNAppDelegate.m */,
 				39A860AE17A2EFE4003F6F4A /* MNViewController.h */,
@@ -278,6 +287,9 @@
 			files = (
 				39A860B217A2EFE5003F6F4A /* Images.xcassets in Resources */,
 				39A860A117A2EFE4003F6F4A /* InfoPlist.strings in Resources */,
+				39FCA69E17A6D99A0064F303 /* Default@2x.png in Resources */,
+				39FCA69C17A6D99A0064F303 /* Default-568h@2x.png in Resources */,
+				39FCA69D17A6D99A0064F303 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
