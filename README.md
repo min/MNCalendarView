@@ -3,4 +3,4 @@ MNCalendarView
 
 Highly customizable calendar view for iOS apps
 
-- work in progress
+![Calendar](https://github.com/min/MNCalendarView/raw/master/Documentation/Default@2x.png)
