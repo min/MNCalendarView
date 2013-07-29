@@ -11,10 +11,8 @@
 #import "MNCalendarViewDayCell.h"
 #import "MNCalendarViewWeekdayCell.h"
 #import "MNCalendarHeaderView.h"
-
-
-#import "NSDate+MNAdditions.h"
 #import "MNFastDateEnumeration.h"
+#import "NSDate+MNAdditions.h"
 
 @interface MNCalendarView() <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -58,6 +56,8 @@
       [[UICollectionView alloc] initWithFrame:CGRectZero
                          collectionViewLayout:layout];
     _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    _collectionView.showsHorizontalScrollIndicator = NO;
+    _collectionView.showsVerticalScrollIndicator = NO;
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     

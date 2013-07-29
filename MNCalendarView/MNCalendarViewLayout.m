@@ -21,4 +21,33 @@
   return self;
 }
 
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
+  NSArray *array =
+    [super layoutAttributesForElementsInRect:({
+      CGRect bounds = self.collectionView.bounds;
+      bounds.origin.y = proposedContentOffset.y;
+      bounds;
+    })];
+
+  CGFloat minOffsetY = CGFLOAT_MAX;
+  UICollectionViewLayoutAttributes *targetLayoutAttributes = nil;
+
+  for (UICollectionViewLayoutAttributes *layoutAttributes in array) {
+    if (layoutAttributes.representedElementKind == UICollectionElementKindSectionHeader) {
+      CGFloat offsetY = fabs(layoutAttributes.frame.origin.y - proposedContentOffset.y);
+      if (offsetY < minOffsetY) {
+        minOffsetY = offsetY;
+
+        targetLayoutAttributes = layoutAttributes;
+      }
+    }
+  }
+
+  if (targetLayoutAttributes) {
+    return targetLayoutAttributes.frame.origin;
+  }
+
+  return CGPointMake(proposedContentOffset.x, proposedContentOffset.y);
+}
+
 @end
