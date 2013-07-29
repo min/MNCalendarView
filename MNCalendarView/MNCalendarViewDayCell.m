@@ -58,9 +58,11 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   
   CGColorRef separatorColor = self.separatorColor.CGColor;
   
+  CGSize size = self.bounds.size;
+  
   MNContextDrawLine(context,
-                    CGPointMake(self.bounds.size.width - 0.5f, 0.5f),
-                    CGPointMake(self.bounds.size.width - 0.5f, self.bounds.size.height),
+                    CGPointMake(size.width - 0.5f, 0.5f),
+                    CGPointMake(size.width - 0.5f, size.height),
                     separatorColor,
                     0.5f);
 }

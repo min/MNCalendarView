@@ -179,15 +179,19 @@
   MNCalendarViewDayCell *cell =
     [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier
                                               forIndexPath:indexPath];
-  
   cell.separatorColor = self.separatorColor;
   
   NSDate *monthDate = self.monthDates[indexPath.section];
-  NSDate *firstDateInMonth =
-    [self firstVisibleDateOfMonth:monthDate];
+  NSDate *firstDateInMonth = [self firstVisibleDateOfMonth:monthDate];
 
   NSUInteger day = indexPath.item - self.daysInWeek;
-  [cell setDate:[firstDateInMonth dateByAddingTimeInterval:day * MN_DAY]
+  
+  NSDateComponents *components =
+    [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit
+                     fromDate:firstDateInMonth];
+  components.day += day;
+  
+  [cell setDate:[self.calendar dateFromComponents:components]
           month:monthDate
        calendar:self.calendar];
   
