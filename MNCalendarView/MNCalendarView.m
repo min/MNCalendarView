@@ -23,6 +23,8 @@
 @property(nonatomic,strong,readwrite) NSArray *weekdaySymbols;
 @property(nonatomic,assign,readwrite) NSUInteger daysInWeek;
 
+@property(nonatomic,strong,readwrite) NSDateFormatter *monthFormatter;
+
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date;
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date;
 
@@ -37,8 +39,7 @@
     self.calendar       = NSCalendar.currentCalendar;
     self.fromDate       = [NSDate.date mn_beginningOfDay:self.calendar];
     self.toDate         = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
-    self.separatorColor = UIColor.lightGrayColor;
-    
+    self.separatorColor = [UIColor colorWithRed:.85f green:.85f blue:.85f alpha:1.f];
     self.daysInWeek = 7;
     
     [self addSubview:self.collectionView];
@@ -74,6 +75,14 @@
                withReuseIdentifier:MNCalendarHeaderViewIdentifier];
   }
   return _collectionView;
+}
+
+- (void)setCalendar:(NSCalendar *)calendar {
+  _calendar = calendar;
+  
+  self.monthFormatter = [[NSDateFormatter alloc] init];
+  self.monthFormatter.calendar = calendar;
+  [self.monthFormatter setDateFormat:@"MMMM yyyy"];
 }
 
 - (void)reloadData {
@@ -150,7 +159,7 @@
                                               forIndexPath:indexPath];
 
   headerView.backgroundColor = self.collectionView.backgroundColor;
-  headerView.date = self.monthDates[indexPath.section];
+  headerView.titleLabel.text = [self.monthFormatter stringFromDate:self.monthDates[indexPath.section]];
 
   return headerView;
 }

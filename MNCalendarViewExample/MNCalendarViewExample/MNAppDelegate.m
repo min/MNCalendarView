@@ -12,9 +12,19 @@
 @implementation MNAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.window.rootViewController = [[MNViewController alloc] init];
+  
+  UITabBarController *controller = [[UITabBarController alloc] init];
+  controller.viewControllers = @[
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSHebrewCalendar]],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSIslamicCalendar]],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSIndianCalendar]],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSPersianCalendar]]
+                                 
+                                 ];
+
+  self.window.rootViewController = controller;
 
   [self.window makeKeyAndVisible];
   

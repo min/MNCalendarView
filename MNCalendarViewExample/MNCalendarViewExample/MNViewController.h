@@ -10,4 +10,6 @@
 
 @interface MNViewController : UIViewController
 
+- (instancetype)initWithCalendar:(NSCalendar *)calendar;
+
 @end

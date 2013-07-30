@@ -10,9 +10,18 @@
 
 @interface MNViewController () <MNCalendarViewDelegate>
 
+@property(nonatomic,strong) NSCalendar *calendar;
+
 @end
 
 @implementation MNViewController
+
+- (instancetype)initWithCalendar:(NSCalendar *)calendar {
+  if (self = [super init]) {
+    self.calendar = calendar;
+  }
+  return self;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -20,6 +29,7 @@
   self.view.backgroundColor = UIColor.whiteColor;
   
   MNCalendarView *calendarView = [[MNCalendarView alloc] initWithFrame:self.view.bounds];
+  calendarView.calendar = self.calendar;
   calendarView.delegate = self;
   calendarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   calendarView.backgroundColor = UIColor.whiteColor;
