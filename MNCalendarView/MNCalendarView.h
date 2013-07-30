@@ -29,6 +29,10 @@
 
 @property(nonatomic,strong) UIColor *separatorColor; // default is the standard separator gray
 
+@property(nonatomic,strong) Class headerViewClass;
+@property(nonatomic,strong) Class weekdayCellClass;
+@property(nonatomic,strong) Class dayCellClass;
+
 - (void)reloadData;
 
 @end

@@ -42,6 +42,10 @@
     self.separatorColor = [UIColor colorWithRed:.85f green:.85f blue:.85f alpha:1.f];
     self.daysInWeek = 7;
     
+    self.headerViewClass  = MNCalendarHeaderView.class;
+    self.weekdayCellClass = MNCalendarViewWeekdayCell.class;
+    self.dayCellClass     = MNCalendarViewDayCell.class;
+
     [self addSubview:self.collectionView];
     [self applyConstraints];
     [self reloadData];
@@ -63,14 +67,13 @@
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     
-    
-    [_collectionView registerClass:MNCalendarViewDayCell.class
+    [_collectionView registerClass:self.dayCellClass
         forCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier];
 
-    [_collectionView registerClass:MNCalendarViewWeekdayCell.class
+    [_collectionView registerClass:self.weekdayCellClass
         forCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier];
     
-    [_collectionView registerClass:MNCalendarHeaderView.class
+    [_collectionView registerClass:self.headerViewClass
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                withReuseIdentifier:MNCalendarHeaderViewIdentifier];
   }
