@@ -207,6 +207,14 @@
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
   MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:collectionView cellForItemAtIndexPath:indexPath];
   
+  if ([cell isKindOfClass:MNCalendarViewDayCell.class] && cell.enabled) {
+    MNCalendarViewDayCell *dayCell = (MNCalendarViewDayCell *)cell;
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)]) {
+      return [self.delegate calendarView:self shouldSelectDate:dayCell.date];
+    }
+  }
+
   return cell.enabled;
 }
 
