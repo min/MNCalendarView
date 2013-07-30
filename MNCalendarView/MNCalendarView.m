@@ -213,8 +213,8 @@
 
 #pragma mark - UICollectionViewDelegate
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-  MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:collectionView cellForItemAtIndexPath:indexPath];
+- (BOOL)canSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
   
   if ([cell isKindOfClass:MNCalendarViewDayCell.class] && cell.enabled) {
     MNCalendarViewDayCell *dayCell = (MNCalendarViewDayCell *)cell;
@@ -225,6 +225,14 @@
   }
 
   return cell.enabled;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+  return [self canSelectItemAtIndexPath:indexPath];
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  return [self canSelectItemAtIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
