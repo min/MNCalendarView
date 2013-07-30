@@ -63,13 +63,12 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
   
   CGColorRef separatorColor = self.separatorColor.CGColor;
   
+  CGFloat pixel = 1.f / [UIScreen mainScreen].scale;
   MNContextDrawLine(context,
                     CGPointMake(0.f, self.bounds.size.height),
                     CGPointMake(self.bounds.size.width, self.bounds.size.height),
                     separatorColor,
-                    0.5f);
-  
-
+                    pixel);
 }
 
 @end

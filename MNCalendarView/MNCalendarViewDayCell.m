@@ -63,11 +63,12 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   CGSize size = self.bounds.size;
   
   if (self.weekday != 7) {
+    CGFloat pixel = 1.f / [UIScreen mainScreen].scale;
     MNContextDrawLine(context,
-                      CGPointMake(size.width - 0.5f, 0.5f),
-                      CGPointMake(size.width - 0.5f, size.height),
+                      CGPointMake(size.width - pixel, pixel),
+                      CGPointMake(size.width - pixel, size.height),
                       separatorColor,
-                      0.5f);
+                      pixel);
   }
 }
 
