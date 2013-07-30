@@ -88,6 +88,10 @@
   [self.monthFormatter setDateFormat:@"MMMM yyyy"];
 }
 
+- (void)setSelectedDate:(NSDate *)selectedDate {
+  _selectedDate = [selectedDate mn_beginningOfDay:self.calendar];
+}
+
 - (void)reloadData {
   NSMutableArray *monthDates = @[].mutableCopy;
   MNFastDateEnumeration *enumeration =
@@ -207,9 +211,14 @@
                      fromDate:firstDateInMonth];
   components.day += day;
   
-  [cell setDate:[self.calendar dateFromComponents:components]
+  NSDate *date = [self.calendar dateFromComponents:components];
+  [cell setDate:date
           month:monthDate
        calendar:self.calendar];
+  
+  if (self.selectedDate && cell.enabled) {
+    [cell setSelected:[date isEqualToDate:self.selectedDate]];
+  }
   
   return cell;
 }
@@ -244,9 +253,13 @@
   if ([cell isKindOfClass:MNCalendarViewDayCell.class] && cell.enabled) {
     MNCalendarViewDayCell *dayCell = (MNCalendarViewDayCell *)cell;
     
+    self.selectedDate = dayCell.date;
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(calendarView:didSelectDate:)]) {
       [self.delegate calendarView:self didSelectDate:dayCell.date];
     }
+    
+    [self.collectionView reloadData];
   }
 }
 
