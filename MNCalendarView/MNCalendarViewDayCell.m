@@ -14,6 +14,7 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
 
 @property(nonatomic,strong,readwrite) NSDate *date;
 @property(nonatomic,strong,readwrite) NSDate *month;
+@property(nonatomic,assign,readwrite) NSUInteger weekday;
 
 @end
 
@@ -28,13 +29,14 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   self.calendar = calendar;
   
   NSDateComponents *components =
-  [self.calendar components:NSMonthCalendarUnit|NSDayCalendarUnit
+  [self.calendar components:NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
                    fromDate:self.date];
   
   NSDateComponents *monthComponents =
   [self.calendar components:NSMonthCalendarUnit
                    fromDate:self.month];
   
+  self.weekday = components.weekday;
   self.titleLabel.text = [NSString stringWithFormat:@"%d", components.day];
   self.enabled = monthComponents.month == components.month;
   
@@ -60,11 +62,13 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   
   CGSize size = self.bounds.size;
   
-  MNContextDrawLine(context,
-                    CGPointMake(size.width - 0.5f, 0.5f),
-                    CGPointMake(size.width - 0.5f, size.height),
-                    separatorColor,
-                    0.5f);
+  if (self.weekday != 7) {
+    MNContextDrawLine(context,
+                      CGPointMake(size.width - 0.5f, 0.5f),
+                      CGPointMake(size.width - 0.5f, size.height),
+                      separatorColor,
+                      0.5f);
+  }
 }
 
 @end
