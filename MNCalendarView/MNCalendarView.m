@@ -36,15 +36,16 @@
 
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    self.calendar       = NSCalendar.currentCalendar;
-    self.fromDate       = [NSDate.date mn_beginningOfDay:self.calendar];
-    self.toDate         = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
-    self.separatorColor = [UIColor colorWithRed:.85f green:.85f blue:.85f alpha:1.f];
+    self.calendar   = NSCalendar.currentCalendar;
+    self.fromDate   = [NSDate.date mn_beginningOfDay:self.calendar];
+    self.toDate     = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
     self.daysInWeek = 7;
     
     self.headerViewClass  = MNCalendarHeaderView.class;
     self.weekdayCellClass = MNCalendarViewWeekdayCell.class;
     self.dayCellClass     = MNCalendarViewDayCell.class;
+
+    _separatorColor = [UIColor colorWithRed:.85f green:.85f blue:.85f alpha:1.f];
 
     [self addSubview:self.collectionView];
     [self applyConstraints];
@@ -78,6 +79,10 @@
                withReuseIdentifier:MNCalendarHeaderViewIdentifier];
   }
   return _collectionView;
+}
+
+- (void)setSeparatorColor:(UIColor *)separatorColor {
+  _separatorColor = separatorColor;
 }
 
 - (void)setCalendar:(NSCalendar *)calendar {

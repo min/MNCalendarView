@@ -14,6 +14,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
+  [[MNCalendarView appearance] setSeparatorColor:UIColor.blueColor];
+
   UITabBarController *controller = [[UITabBarController alloc] init];
   controller.viewControllers = @[
                                  [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] title:@"Gregorian"],
