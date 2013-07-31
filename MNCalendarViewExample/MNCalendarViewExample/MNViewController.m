@@ -10,15 +10,17 @@
 
 @interface MNViewController () <MNCalendarViewDelegate>
 
-@property(nonatomic,strong) NSCalendar *calendar;
+@property(nonatomic,strong) NSCalendar     *calendar;
+@property(nonatomic,strong) MNCalendarView *calendarView;
 
 @end
 
 @implementation MNViewController
 
-- (instancetype)initWithCalendar:(NSCalendar *)calendar {
+- (instancetype)initWithCalendar:(NSCalendar *)calendar title:(NSString *)title {
   if (self = [super init]) {
     self.calendar = calendar;
+    self.title = title;
   }
   return self;
 }
@@ -28,14 +30,23 @@
   
   self.view.backgroundColor = UIColor.whiteColor;
   
-  MNCalendarView *calendarView = [[MNCalendarView alloc] initWithFrame:self.view.bounds];
-  calendarView.calendar = self.calendar;
-  calendarView.selectedDate = [NSDate date];
-  calendarView.delegate = self;
-  calendarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-  calendarView.backgroundColor = UIColor.whiteColor;
+  self.calendarView = [[MNCalendarView alloc] initWithFrame:self.view.bounds];
+  self.calendarView.calendar = self.calendar;
+  self.calendarView.selectedDate = [NSDate date];
+  self.calendarView.delegate = self;
+  self.calendarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+  self.calendarView.backgroundColor = UIColor.whiteColor;
   
-  [self.view addSubview:calendarView];
+  [self.view addSubview:self.calendarView];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  [self.calendarView.collectionView.collectionViewLayout invalidateLayout];
+  [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  [self.calendarView reloadData];
 }
 
 #pragma mark - MNCalendarViewDelegate

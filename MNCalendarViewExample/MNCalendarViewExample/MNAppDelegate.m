@@ -16,11 +16,11 @@
   
   UITabBarController *controller = [[UITabBarController alloc] init];
   controller.viewControllers = @[
-                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]],
-                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSHebrewCalendar]],
-                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSIslamicCalendar]],
-                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSIndianCalendar]],
-                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSPersianCalendar]]
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] title:@"Gregorian"],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSHebrewCalendar] title:@"Hebrew"],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSIslamicCalendar] title:@"Islamic"],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSIndianCalendar] title:@"Indian"],
+                                 [[MNViewController alloc] initWithCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSPersianCalendar] title:@"Persian"]
                                  
                                  ];
 
