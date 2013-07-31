@@ -28,6 +28,9 @@
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date;
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date;
 
+- (BOOL)dateEnabled:(NSDate *)date;
+- (BOOL)canSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+
 - (void)applyConstraints;
 
 @end
@@ -156,6 +159,27 @@
    ];
 }
 
+- (BOOL)dateEnabled:(NSDate *)date {
+  if (self.delegate && [self.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)]) {
+    return [self.delegate calendarView:self shouldSelectDate:date];
+  }
+  return YES;
+}
+
+- (BOOL)canSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+  BOOL enabled = cell.enabled;
+
+  if ([cell isKindOfClass:MNCalendarViewDayCell.class] && enabled) {
+    MNCalendarViewDayCell *dayCell = (MNCalendarViewDayCell *)cell;
+
+    enabled = [self dateEnabled:dayCell.date];
+  }
+
+  return enabled;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -220,6 +244,7 @@
   [cell setDate:date
           month:monthDate
        calendar:self.calendar];
+  [cell setEnabled:[self dateEnabled:date]];
   
   if (self.selectedDate && cell.enabled) {
     [cell setSelected:[date isEqualToDate:self.selectedDate]];
@@ -229,20 +254,6 @@
 }
 
 #pragma mark - UICollectionViewDelegate
-
-- (BOOL)canSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  MNCalendarViewCell *cell = (MNCalendarViewCell *)[self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-  
-  if ([cell isKindOfClass:MNCalendarViewDayCell.class] && cell.enabled) {
-    MNCalendarViewDayCell *dayCell = (MNCalendarViewDayCell *)cell;
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)]) {
-      return [self.delegate calendarView:self shouldSelectDate:dayCell.date];
-    }
-  }
-
-  return cell.enabled;
-}
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
   return [self canSelectItemAtIndexPath:indexPath];

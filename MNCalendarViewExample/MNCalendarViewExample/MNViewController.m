@@ -12,6 +12,7 @@
 
 @property(nonatomic,strong) NSCalendar     *calendar;
 @property(nonatomic,strong) MNCalendarView *calendarView;
+@property(nonatomic,strong) NSDate         *currentDate;
 
 @end
 
@@ -30,6 +31,8 @@
   
   self.view.backgroundColor = UIColor.whiteColor;
   
+  self.currentDate = [NSDate date];
+
   self.calendarView = [[MNCalendarView alloc] initWithFrame:self.view.bounds];
   self.calendarView.calendar = self.calendar;
   self.calendarView.selectedDate = [NSDate date];
@@ -53,6 +56,16 @@
 
 - (void)calendarView:(MNCalendarView *)calendarView didSelectDate:(NSDate *)date {
   NSLog(@"date selected: %@", date);
+}
+
+- (BOOL)calendarView:(MNCalendarView *)calendarView shouldSelectDate:(NSDate *)date {
+  NSTimeInterval timeInterval = [date timeIntervalSinceDate:self.currentDate];
+
+  if (timeInterval > MN_WEEK && timeInterval < (MN_WEEK * 2)) {
+    return NO;
+  }
+
+  return YES;
 }
 
 @end
