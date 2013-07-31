@@ -45,10 +45,10 @@
   if (state->state == 0) {
     state->mutationsPtr = &state->extra[0];
     switch (self.unit) {
-      case NSCalendarUnitYear:
+      case NSYearCalendarUnit:
         unit = self.components.year;
         break;
-      case NSCalendarUnitMonth:
+      case NSMonthCalendarUnit:
         unit = self.components.month;
         break;
       default:
@@ -65,10 +65,10 @@
     state->itemsPtr = buffer;
     while ( (state->state <= unit) && (count < len) ) {
       switch (self.unit) {
-        case NSCalendarUnitYear:
+        case NSYearCalendarUnit:
           [self.components setYear:state->state];
           break;
-        case NSCalendarUnitMonth:
+        case NSMonthCalendarUnit:
           [self.components setMonth:state->state];
           break;
         default:

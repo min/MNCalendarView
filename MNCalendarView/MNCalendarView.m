@@ -98,7 +98,7 @@
     [[MNFastDateEnumeration alloc] initWithFromDate:[self.fromDate mn_firstDateOfMonth:self.calendar]
                                              toDate:[self.toDate mn_firstDateOfMonth:self.calendar]
                                            calendar:self.calendar
-                                               unit:NSCalendarUnitMonth];
+                                               unit:NSMonthCalendarUnit];
   for (NSDate *date in enumeration) {
     [monthDates addObject:date];
   }
