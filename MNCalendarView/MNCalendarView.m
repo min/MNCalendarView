@@ -37,23 +37,36 @@
 
 @implementation MNCalendarView
 
+- (void)commonInit {
+  self.calendar   = NSCalendar.currentCalendar;
+  self.fromDate   = [NSDate.date mn_beginningOfDay:self.calendar];
+  self.toDate     = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
+  self.daysInWeek = 7;
+  
+  self.headerViewClass  = MNCalendarHeaderView.class;
+  self.weekdayCellClass = MNCalendarViewWeekdayCell.class;
+  self.dayCellClass     = MNCalendarViewDayCell.class;
+  
+  _separatorColor = [UIColor colorWithRed:.85f green:.85f blue:.85f alpha:1.f];
+  
+  [self addSubview:self.collectionView];
+  [self applyConstraints];
+  [self reloadData];
+}
+
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    self.calendar   = NSCalendar.currentCalendar;
-    self.fromDate   = [NSDate.date mn_beginningOfDay:self.calendar];
-    self.toDate     = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
-    self.daysInWeek = 7;
-    
-    self.headerViewClass  = MNCalendarHeaderView.class;
-    self.weekdayCellClass = MNCalendarViewWeekdayCell.class;
-    self.dayCellClass     = MNCalendarViewDayCell.class;
-
-    _separatorColor = [UIColor colorWithRed:.85f green:.85f blue:.85f alpha:1.f];
-
-    [self addSubview:self.collectionView];
-    [self applyConstraints];
-    [self reloadData];
+    [self commonInit];
   }
+  return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+  self = [super initWithCoder: aDecoder];
+  if ( self ) {
+    [self commonInit];
+  }
+  
   return self;
 }
 
@@ -71,15 +84,7 @@
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     
-    [_collectionView registerClass:self.dayCellClass
-        forCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier];
-
-    [_collectionView registerClass:self.weekdayCellClass
-        forCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier];
-    
-    [_collectionView registerClass:self.headerViewClass
-        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-               withReuseIdentifier:MNCalendarHeaderViewIdentifier];
+    [self registerUICollectionViewClasses];
   }
   return _collectionView;
 }
@@ -118,6 +123,18 @@
   self.weekdaySymbols = formatter.shortWeekdaySymbols;
   
   [self.collectionView reloadData];
+}
+
+- (void)registerUICollectionViewClasses {
+  [_collectionView registerClass:self.dayCellClass
+      forCellWithReuseIdentifier:MNCalendarViewDayCellIdentifier];
+  
+  [_collectionView registerClass:self.weekdayCellClass
+      forCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier];
+  
+  [_collectionView registerClass:self.headerViewClass
+      forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+             withReuseIdentifier:MNCalendarHeaderViewIdentifier];
 }
 
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date {
