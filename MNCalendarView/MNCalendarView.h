@@ -16,7 +16,7 @@
 
 @protocol MNCalendarViewDelegate;
 
-@interface MNCalendarView : UIView
+@interface MNCalendarView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property(nonatomic,strong,readonly) UICollectionView *collectionView;
 
@@ -34,6 +34,7 @@
 @property(nonatomic,strong) Class dayCellClass;
 
 - (void)reloadData;
+- (void)registerUICollectionViewClasses; 
 
 @end
 
