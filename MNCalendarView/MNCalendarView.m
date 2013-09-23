@@ -261,8 +261,11 @@
   [cell setDate:date
           month:monthDate
        calendar:self.calendar];
-  [cell setEnabled:[self dateEnabled:date]];
   
+  if (cell.enabled) {
+    [cell setEnabled:[self dateEnabled:date]];
+  }
+
   if (self.selectedDate && cell.enabled) {
     [cell setSelected:[date isEqualToDate:self.selectedDate]];
   }
