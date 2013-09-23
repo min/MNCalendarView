@@ -72,3 +72,62 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
 }
 
 @end
+
+
+
+@implementation NSDate (Additional)
+
++ (NSDate *)dateFromDay:(NSInteger)day month:(NSInteger)month year:(NSInteger)year
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [calendar setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    
+    [components setDay:day];
+    
+    if (month <= 0) {
+        [components setMonth:12-month];
+        [components setYear:year-1];
+    } else if (month >= 13) {
+        [components setMonth:month-12];
+        [components setYear:year+1];
+    } else {
+        [components setMonth:month];
+        [components setYear:year];
+    }
+    
+    
+    return [NSDate dateWithNoTime:[calendar dateFromComponents:components] middleDay:NO];
+}
++ (NSDate *)dateWithNoTime:(NSDate *)dateTime middleDay:(BOOL)middle
+{
+    if( dateTime == nil ) {
+        dateTime = [NSDate date];
+    }
+    
+    NSCalendar       *calendar   = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [calendar setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+                             fromDate:dateTime];
+    
+    NSDate *dateOnly = [calendar dateFromComponents:components];
+    
+    if (middle)
+        dateOnly = [dateOnly dateByAddingTimeInterval:(60.0 * 60.0 * 12.0)];           // Push to Middle of day.
+    
+    return dateOnly;
+}
+
+- (NSUInteger)numberOfDaysInMonth
+{
+    NSCalendar *c = [NSCalendar currentCalendar];
+    NSRange days = [c rangeOfUnit:NSDayCalendarUnit
+                           inUnit:NSMonthCalendarUnit
+                          forDate:self];
+    
+    return days.length;
+}
+
+
+@end
