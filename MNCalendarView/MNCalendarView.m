@@ -98,7 +98,7 @@
   
   self.monthFormatter = [[NSDateFormatter alloc] init];
   self.monthFormatter.calendar = calendar;
-  [self.monthFormatter setDateFormat:@"MMMM yyyy"];
+  [self.monthFormatter setDateFormat:@"LLLL yyyy"];
 }
 
 - (void)setSelectedDate:(NSDate *)selectedDate {
