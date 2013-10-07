@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Min Kim" => "me@mink.im" }
   s.source       = { :git => "https://github.com/min/MNCalendarView.git", :branch => "master", :tag => "v#{s.version}" }
-  s.platform     = :ios, '6.0'
+  s.platform     = :ios
   s.frameworks   = 'UIKit', 'CoreGraphics'
   s.source_files = 'MNCalendarView', 'MNCalendarView/**/*.{h,m}'
   s.requires_arc = true
