@@ -97,6 +97,7 @@
   _calendar = calendar;
   
   self.monthFormatter = [[NSDateFormatter alloc] init];
+  self.monthFormatter.locale = [calendar locale];
   self.monthFormatter.calendar = calendar;
   [self.monthFormatter setDateFormat:@"MMMM yyyy"];
 }
@@ -119,7 +120,8 @@
   
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter.calendar = self.calendar;
-  
+  formatter.locale = self.calendar.locale;
+
   self.weekdaySymbols = formatter.shortWeekdaySymbols;
   
   [self.collectionView reloadData];
