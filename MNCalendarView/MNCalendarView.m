@@ -97,6 +97,7 @@
   _calendar = calendar;
   
   self.monthFormatter = [[NSDateFormatter alloc] init];
+  self.monthFormatter.locale = [calendar locale];
   self.monthFormatter.calendar = calendar;
   [self.monthFormatter setDateFormat:@"MMMM yyyy"];
 }
@@ -119,7 +120,8 @@
   
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter.calendar = self.calendar;
-  
+  formatter.locale = self.calendar.locale;
+
   self.weekdaySymbols = formatter.shortWeekdaySymbols;
   
   [self.collectionView reloadData];
@@ -140,24 +142,15 @@
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date {
   date = [date mn_firstDateOfMonth:self.calendar];
   
-  NSDateComponents *components =
-    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
-                fromDate:date];
-  
-  return
-    [[date mn_dateWithDay:-((components.weekday - 1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
+  NSDateComponents *components = [self.calendar components:NSWeekdayCalendarUnit fromDate:date];
+  return [date dateByAddingTimeInterval:-MN_DAY * ((components.weekday - self.calendar.firstWeekday + self.daysInWeek) % self.daysInWeek)];
 }
 
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date {
   date = [date mn_lastDateOfMonth:self.calendar];
-  
-  NSDateComponents *components =
-    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
-                     fromDate:date];
-  
-  return
-    [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday - 1) % self.daysInWeek)
-                calendar:self.calendar];
+
+  NSDateComponents *components = [self.calendar components:NSWeekdayCalendarUnit fromDate:date];
+  return [date dateByAddingTimeInterval:MN_DAY * (self.daysInWeek - 1 - ((components.weekday - self.calendar.firstWeekday + self.daysInWeek) % self.daysInWeek))];
 }
 
 - (void)applyConstraints {
@@ -238,7 +231,7 @@
                                                 forIndexPath:indexPath];
     
     cell.backgroundColor = self.collectionView.backgroundColor;
-    cell.titleLabel.text = self.weekdaySymbols[indexPath.item];
+    cell.titleLabel.text = self.weekdaySymbols[(NSUInteger) ((indexPath.item + self.calendar.firstWeekday - 1) % self.daysInWeek)];
     cell.separatorColor = self.separatorColor;
     return cell;
   }
@@ -250,7 +243,7 @@
   NSDate *monthDate = self.monthDates[indexPath.section];
   NSDate *firstDateInMonth = [self firstVisibleDateOfMonth:monthDate];
 
-  NSUInteger day = indexPath.item - self.daysInWeek;
+  NSInteger day = indexPath.item - self.daysInWeek;
   
   NSDateComponents *components =
     [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit
@@ -307,10 +300,10 @@
   CGFloat itemWidth  = roundf(width / self.daysInWeek);
   CGFloat itemHeight = indexPath.item < self.daysInWeek ? 30.f : itemWidth;
   
-  NSUInteger weekday = indexPath.item % self.daysInWeek;
+  NSInteger weekday = (indexPath.item + self.calendar.firstWeekday - 1) % self.daysInWeek;
   
   if (weekday == self.daysInWeek - 1) {
-    itemWidth = width - (itemWidth * (self.daysInWeek - 1));
+    itemWidth = width - itemWidth * (self.daysInWeek - 1); // use all remaining width for rightmost element
   }
   
   return CGSizeMake(itemWidth, itemHeight);

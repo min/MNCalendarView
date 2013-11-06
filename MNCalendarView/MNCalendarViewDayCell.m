@@ -15,6 +15,7 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
 @property(nonatomic,strong,readwrite) NSDate *date;
 @property(nonatomic,strong,readwrite) NSDate *month;
 @property(nonatomic,assign,readwrite) NSUInteger weekday;
+@property(nonatomic,assign, readwrite) BOOL withinMonth;
 
 @end
 
@@ -36,21 +37,24 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   [self.calendar components:NSMonthCalendarUnit
                    fromDate:self.month];
   
-  self.weekday = components.weekday;
-  self.titleLabel.text = [NSString stringWithFormat:@"%d", components.day];
-  self.enabled = monthComponents.month == components.month;
-  
+  self.weekday = (NSUInteger) components.weekday;
+  self.withinMonth = (monthComponents.month == components.month);
+  self.enabled = self.withinMonth;
+  self.titleLabel.text = self.withinMonth ? [@(components.day) stringValue] : @"";
+
   [self setNeedsDisplay];
 }
 
 - (void)setEnabled:(BOOL)enabled {
-  [super setEnabled:enabled];
-  
+  [super setEnabled:(enabled && self.withinMonth)];
+
   self.titleLabel.textColor =
   self.enabled ? UIColor.darkTextColor : UIColor.lightGrayColor;
   
   self.backgroundColor =
-  self.enabled ? UIColor.whiteColor : [UIColor colorWithRed:.96f green:.96f blue:.96f alpha:1.f];
+  self.enabled ? UIColor.whiteColor :
+	  self.withinMonth ? [UIColor colorWithRed:.96f green:.96f blue:.96f alpha:1.f] :
+		  self.separatorColor;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -61,14 +65,15 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   CGColorRef separatorColor = self.separatorColor.CGColor;
   
   CGSize size = self.bounds.size;
-  
-  if (self.weekday != 7) {
-    CGFloat pixel = 1.f / [UIScreen mainScreen].scale;
-    MNContextDrawLine(context,
-                      CGPointMake(size.width - pixel, pixel),
-                      CGPointMake(size.width - pixel, size.height),
-                      separatorColor,
-                      pixel);
+
+  if (self.withinMonth && self.weekday != self.calendar.firstWeekday) {
+	  CGFloat pixel = 1.f / [UIScreen mainScreen].scale;
+      MNContextDrawLine(context,
+                     CGPointMake(0, 0),
+                     CGPointMake(0, size.height),
+                     separatorColor,
+                     pixel);
+
   }
 }
 
