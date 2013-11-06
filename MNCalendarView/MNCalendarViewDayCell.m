@@ -37,15 +37,16 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   [self.calendar components:NSMonthCalendarUnit
                    fromDate:self.month];
   
-  self.weekday = components.weekday;
-  self.enabled = self.withinMonth = (monthComponents.month == components.month);
+  self.weekday = (NSUInteger) components.weekday;
+  self.withinMonth = (monthComponents.month == components.month);
+  self.enabled = self.withinMonth;
   self.titleLabel.text = self.withinMonth ? [@(components.day) stringValue] : @"";
 
   [self setNeedsDisplay];
 }
 
 - (void)setEnabled:(BOOL)enabled {
-  [super setEnabled:enabled && self.withinMonth];
+  [super setEnabled:(enabled && self.withinMonth)];
 
   self.titleLabel.textColor =
   self.enabled ? UIColor.darkTextColor : UIColor.lightGrayColor;
@@ -53,7 +54,7 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   self.backgroundColor =
   self.enabled ? UIColor.whiteColor :
 	  self.withinMonth ? [UIColor colorWithRed:.96f green:.96f blue:.96f alpha:1.f] :
-		  [UIColor colorWithRed:.80f green:.80f blue:.80f alpha:1.f];
+		  self.separatorColor;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -65,7 +66,7 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   
   CGSize size = self.bounds.size;
 
-  if (self.withinMonth && self.weekday != 1) {
+  if (self.withinMonth && self.weekday != self.calendar.firstWeekday) {
 	  CGFloat pixel = 1.f / [UIScreen mainScreen].scale;
       MNContextDrawLine(context,
                      CGPointMake(0, 0),
