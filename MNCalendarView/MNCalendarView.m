@@ -108,14 +108,19 @@
 - (void)reloadData {
   NSMutableArray *monthDates = @[].mutableCopy;
   MNFastDateEnumeration *enumeration =
-    [[MNFastDateEnumeration alloc] initWithFromDate:[self.fromDate mn_firstDateOfMonth:self.calendar]
-                                             toDate:[self.toDate mn_firstDateOfMonth:self.calendar]
+    [[MNFastDateEnumeration alloc] initWithFromDate:[self.fromDate firstDateOfMonthWithCalendar:self.calendar]
+                                             toDate:[self.toDate lastDateOfMonthWithCalendar:self.calendar]
                                            calendar:self.calendar
                                                unit:NSMonthCalendarUnit];
   for (NSDate *date in enumeration) {
     [monthDates addObject:date];
   }
-  self.monthDates = monthDates;
+
+  if (self.inversed) {
+      self.monthDates = [[monthDates reverseObjectEnumerator] allObjects];
+  } else {
+      self.monthDates = monthDates;
+  }
   
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter.calendar = self.calendar;
@@ -138,26 +143,32 @@
 }
 
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date {
-  date = [date mn_firstDateOfMonth:self.calendar];
-  
-  NSDateComponents *components =
-    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
-                fromDate:date];
-  
-  return
-    [[date mn_dateWithDay:-((components.weekday - 1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
+    
+    return [[date firstDateOfMonthWithCalendar:self.calendar] firstDateOfWeekWithCalendar:self.calendar];
+    
+//  date = [date mn_firstDateOfMonth:self.calendar];
+//  
+//  NSDateComponents *components =
+//    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
+//                fromDate:date];
+//  
+//  return
+//    [[date mn_dateWithDay:-((components.weekday - 1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
 }
 
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date {
-  date = [date mn_lastDateOfMonth:self.calendar];
-  
-  NSDateComponents *components =
-    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
-                     fromDate:date];
-  
-  return
-    [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday - 1) % self.daysInWeek)
-                calendar:self.calendar];
+    
+    return [[date lastDateOfMonthWithCalendar:self.calendar] lastDateOfWeekWithCalendar:self.calendar];
+    
+//  date = [date mn_lastDateOfMonth:self.calendar];
+//  
+//  NSDateComponents *components =
+//    [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
+//                     fromDate:date];
+//  
+//  return
+//    [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday - 1) % self.daysInWeek)
+//                calendar:self.calendar];
 }
 
 - (void)applyConstraints {
@@ -236,9 +247,11 @@
     MNCalendarViewWeekdayCell *cell =
       [collectionView dequeueReusableCellWithReuseIdentifier:MNCalendarViewWeekdayCellIdentifier
                                                 forIndexPath:indexPath];
-    
+  
+    NSInteger adjustedIndexOfDayInWeek = (indexPath.item + self.calendar.firstWeekday - 1) % self.daysInWeek;
+      
     cell.backgroundColor = self.collectionView.backgroundColor;
-    cell.titleLabel.text = self.weekdaySymbols[indexPath.item];
+    cell.titleLabel.text = self.weekdaySymbols[adjustedIndexOfDayInWeek];
     cell.separatorColor = self.separatorColor;
     return cell;
   }
@@ -252,6 +265,15 @@
 
   NSUInteger day = indexPath.item - self.daysInWeek;
   
+  if (self.inversed) {
+      
+      NSInteger numberOfDaysInMonth = ([self.collectionView numberOfItemsInSection:indexPath.section] - self.daysInWeek) - 1;
+      NSInteger r = day / self.daysInWeek;
+      NSInteger c = day % self.daysInWeek;
+      day = numberOfDaysInMonth - (r * self.daysInWeek + (self.daysInWeek - c)) + 1;
+      
+  }
+    
   NSDateComponents *components =
     [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit
                      fromDate:firstDateInMonth];

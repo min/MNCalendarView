@@ -36,8 +36,8 @@ NSString *const MNCalendarViewDayCellIdentifier = @"MNCalendarViewDayCellIdentif
   [self.calendar components:NSMonthCalendarUnit
                    fromDate:self.month];
   
-  self.weekday = components.weekday;
-  self.titleLabel.text = [NSString stringWithFormat:@"%d", components.day];
+  self.weekday = (components.weekday + self.calendar.firstWeekday - 1) % 7;
+  self.titleLabel.text = [NSString stringWithFormat:@"%ld", (long)components.day];
   self.enabled = monthComponents.month == components.month;
   
   [self setNeedsDisplay];

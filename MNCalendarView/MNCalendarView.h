@@ -33,6 +33,8 @@
 @property(nonatomic,strong) Class weekdayCellClass;
 @property(nonatomic,strong) Class dayCellClass;
 
+@property(nonatomic, assign) BOOL inversed;
+
 - (void)reloadData;
 - (void)registerUICollectionViewClasses; 
 
